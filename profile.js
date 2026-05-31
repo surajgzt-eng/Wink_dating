@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const referralLink = urlParams.get('ref_link') || '';
   const photoUrl = urlParams.get('photo_url') || '';
   let currentUploadedPhotoUrl = photoUrl;
+  const apiURL = urlParams.get('api_url') || '';
 
   // Setup elements
   const profilePhoto = document.getElementById('profilePhoto');
@@ -115,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Verify Account Action
   verifyProfileBtn.addEventListener('click', () => {
-    if (tg && !tg.initDataUnsafe?.query_id) {
+    if (tg && tg.initDataUnsafe?.query_id) {
       tg.showAlert("⚠️ Verification can only be started when you open your profile from the bottom keyboard menu button (👤 My Profile 3D) in the bot chat.\n\nPlease close this window, ensure you see the chat menu keyboard, and tap '👤 My Profile 3D' to proceed!");
       return;
     }
@@ -155,24 +156,57 @@ document.addEventListener('DOMContentLoaded', () => {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch('https://telegra.ph/upload', {
-        method: 'POST',
-        body: formData
-      });
+      let uploadedUrl = '';
+      let success = false;
 
-      if (!response.ok) {
-        throw new Error(`Upload failed with status ${response.status}`);
+      // Try uploading via our backend proxy first if apiURL is provided
+      if (apiURL) {
+        try {
+          const response = await fetch(`${apiURL}/api/upload`, {
+            method: 'POST',
+            body: formData
+          });
+
+          if (response.ok) {
+            const result = await response.json();
+            if (result && result.url) {
+              uploadedUrl = result.url;
+              success = true;
+            }
+          }
+        } catch (proxyErr) {
+          console.warn('Backend proxy upload failed, attempting fallback...', proxyErr);
+        }
       }
 
-      const result = await response.json();
-      if (result && result[0] && result[0].src) {
-        const uploadedUrl = 'https://telegra.ph' + result[0].src;
+      // Fallback: Upload to tmpfiles.org (temporary 24h upload) if proxy failed or wasn't provided
+      if (!success) {
+        try {
+          const response = await fetch('https://tmpfiles.org/api/v1/upload', {
+            method: 'POST',
+            body: formData
+          });
+
+          if (response.ok) {
+            const result = await response.json();
+            if (result && result.data && result.data.url) {
+              uploadedUrl = result.data.url.replace('https://tmpfiles.org/', 'https://tmpfiles.org/dl/');
+              success = true;
+              console.log('Uploaded successfully to temporary fallback storage:', uploadedUrl);
+            }
+          }
+        } catch (fallbackErr) {
+          console.error('Fallback upload also failed:', fallbackErr);
+        }
+      }
+
+      if (success && uploadedUrl) {
         currentUploadedPhotoUrl = uploadedUrl;
         profilePhoto.src = uploadedUrl;
         if (tg) tg.showAlert('✨ Photo uploaded successfully! Remember to tap "Save Changes" at the bottom of the page to save your updated profile.');
         else alert('✨ Photo uploaded successfully!');
       } else {
-        throw new Error('Invalid response structure from upload server');
+        throw new Error('All upload endpoints failed. Please check your network or try again.');
       }
     } catch (err) {
       console.error('Photo upload error:', err);
@@ -294,7 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Save changes and submit via WebApp sendData
   const saveProfileBtn = document.getElementById('saveProfileBtn');
   saveProfileBtn.addEventListener('click', () => {
-    if (tg && !tg.initDataUnsafe?.query_id) {
+    if (tg && tg.initDataUnsafe?.query_id) {
       tg.showAlert("⚠️ Your profile changes cannot be saved because this window was opened from an inline button.\n\nTo save changes, you MUST open your profile by tapping the bottom keyboard menu button (👤 My Profile 3D) in the bot chat.\n\nPlease close this window and try again using the bottom menu!");
       return;
     }
