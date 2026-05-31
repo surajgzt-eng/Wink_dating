@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   if (partnerId) {
     singleUnlockSec.style.display = 'block';
-    singleUnlockBtn.textContent = `🔑 Unlock this chat only — ₹19`;
+    singleUnlockBtn.textContent = `🔑 Unlock this chat only — ₹59`;
   } else {
     // If not matching, we don't display single-chat unlock option
     singleUnlockSec.style.display = 'none';
