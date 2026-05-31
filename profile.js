@@ -164,6 +164,9 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
           const response = await fetch(`${apiURL}/api/upload`, {
             method: 'POST',
+            headers: {
+              'Authorization': `tma ${tg ? tg.initData : ''}`
+            },
             body: formData
           });
 
