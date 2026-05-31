@@ -94,20 +94,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Action Helpers: send data back to bot
+  // Action Helpers: open payment URLs
   const sendPurchaseAction = (planName, targetPartnerId = '') => {
-    const payload = {
-      action: 'purchase',
-      plan: planName,
-      partnerId: targetPartnerId
-    };
+    let url = '';
+    if (planName === 'single') url = urlParams.get('singleUrl');
+    else if (planName === 'weekly') url = urlParams.get('weekUrl');
+    else if (planName === 'monthly') url = urlParams.get('monthUrl');
+    else if (planName === 'yearly') url = urlParams.get('yearUrl');
+    else if (planName === 'flash_sale') url = urlParams.get('flashUrl');
     
-    if (tg) {
-      tg.sendData(JSON.stringify(payload));
-      tg.close();
+    if (!url || url === 'mock_single' || url === 'mock_weekly' || url === 'mock_monthly' || url === 'mock_yearly' || url === 'mock_flash') {
+      const payload = {
+        action: 'purchase',
+        plan: planName,
+        partnerId: targetPartnerId
+      };
+      
+      if (tg && (tg.initDataUnsafe?.query_id || tg.initDataUnsafe?.receiver)) {
+        tg.sendData(JSON.stringify(payload));
+        tg.close();
+      } else {
+        alert(`[TEST MODE] Selected: ${planName}. Return to bot chat to verify!`);
+        if (tg) tg.close();
+      }
     } else {
-      console.log('Sending mock purchase payload:', payload);
-      alert(`Plan selected: ${planName}. Open inside Telegram to pay.`);
+      if (tg) {
+        tg.openLink(url);
+        tg.close();
+      } else {
+        window.open(url, '_blank');
+      }
     }
   };
 
