@@ -114,6 +114,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Verify Account Action
   verifyProfileBtn.addEventListener('click', () => {
+    if (tg && !tg.initDataUnsafe?.query_id) {
+      tg.showAlert("⚠️ Verification can only be started when you open your profile from the bottom keyboard menu button (👤 My Profile 3D) in the bot chat.\n\nPlease close this window, ensure you see the chat menu keyboard, and tap '👤 My Profile 3D' to proceed!");
+      return;
+    }
     const payload = { action: 'verify_request' };
     if (tg) {
       tg.sendData(JSON.stringify(payload));
@@ -121,6 +125,23 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       console.log('Sending mock verify request payload:', payload);
       alert('Verification request sent. Open in Telegram to proceed.');
+    }
+  });
+
+  // Change Photo Action
+  const changePhotoBtn = document.getElementById('changePhotoBtn');
+  changePhotoBtn.addEventListener('click', () => {
+    if (tg && !tg.initDataUnsafe?.query_id) {
+      tg.showAlert("⚠️ To change your photo, you must open your profile from the bottom keyboard menu button (👤 My Profile 3D) in the bot chat.\n\nPlease close this window, ensure you see the chat menu keyboard, and tap '👤 My Profile 3D' to proceed!");
+      return;
+    }
+    const payload = { action: 'change_photo_request' };
+    if (tg) {
+      tg.sendData(JSON.stringify(payload));
+      tg.close();
+    } else {
+      console.log('Sending mock change photo request payload:', payload);
+      alert('Change photo request sent. Open inside Telegram to proceed.');
     }
   });
 
@@ -231,6 +252,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Save changes and submit via WebApp sendData
   const saveProfileBtn = document.getElementById('saveProfileBtn');
   saveProfileBtn.addEventListener('click', () => {
+    if (tg && !tg.initDataUnsafe?.query_id) {
+      tg.showAlert("⚠️ Your profile changes cannot be saved because this window was opened from an inline button.\n\nTo save changes, you MUST open your profile by tapping the bottom keyboard menu button (👤 My Profile 3D) in the bot chat.\n\nPlease close this window and try again using the bottom menu!");
+      return;
+    }
     const age = parseInt(editAge.value, 10);
     if (isNaN(age) || age < 18 || age > 99) {
       if (tg) tg.showAlert('Please enter a valid age between 18 and 99!');

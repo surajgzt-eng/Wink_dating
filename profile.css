@@ -305,3 +305,40 @@
   color: var(--color-text-muted);
   margin-top: 4px;
 }
+
+/* Change Photo Styles */
+.change-photo-container {
+  display: flex;
+  justify-content: center;
+  margin-top: -6px;
+  margin-bottom: 16px;
+}
+
+.change-photo-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--color-text-main);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.change-photo-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 10px rgba(147, 51, 234, 0.3);
+  transform: translateY(-1px);
+}
+
+.change-photo-btn:active {
+  transform: translateY(1px);
+}
+
