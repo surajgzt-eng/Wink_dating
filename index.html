@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Wynk Speed Dating - Web App</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .welcome-container {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      width: 100%;
+      max-width: 400px;
+    }
+    .logo-3d {
+      font-size: 80px;
+      margin-bottom: 24px;
+      filter: drop-shadow(0 0 20px rgba(236, 72, 153, 0.4));
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      background: linear-gradient(to right, #f3f4f6, #9333ea, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+    p {
+      color: var(--color-text-muted);
+      margin-bottom: 30px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="welcome-container animate-slideup">
+    <div class="logo-3d">✨</div>
+    <h1>WYNK SPEED DATING</h1>
+    <p>This is a Telegram Mini App companion. Please open the bot on Telegram to start matching and find your dates!</p>
+    <a href="https://t.me/wink_dating_bot" class="glow-btn glow-btn-primary">Open Wynk Dating Bot</a>
+  </div>
+</body>
+</html>

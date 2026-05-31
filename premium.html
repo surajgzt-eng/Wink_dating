@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Wynk Premium</title>
+  <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="premium.css">
+  <!-- Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+  <div class="premium-container animate-slideup">
+    <!-- Close Button -->
+    <div class="header-nav">
+      <span class="back-btn" id="closeBtn">✕</span>
+      <span class="header-title">Wynk Premium</span>
+    </div>
+
+    <!-- 3D Rotating Crown Container -->
+    <div class="scene-3d">
+      <div class="crown-3d">
+        <div class="crown-face front">👑</div>
+        <div class="crown-face back">👑</div>
+        <div class="crown-face left">✨</div>
+        <div class="crown-face right">✨</div>
+      </div>
+    </div>
+
+    <div class="premium-header">
+      <h2>WYNK PREMIUM</h2>
+      <p class="subtitle">Elevate your speed dating experience</p>
+    </div>
+
+    <!-- Benefits list (staggered fade-in) -->
+    <div class="glass-panel benefits-panel">
+      <div class="benefits-title">⚡ WYNK PREMIUM BENEFITS</div>
+      <div class="benefit-item" style="--delay: 1">
+        <span class="benefit-icon">💬</span>
+        <div class="benefit-text">
+          <strong>Unlimited Messages</strong>
+          <span>Keep the sparks flying, no message limits in matches.</span>
+        </div>
+      </div>
+      <div class="benefit-item" style="--delay: 2">
+        <span class="benefit-icon">🎯</span>
+        <div class="benefit-text">
+          <strong>Priority Matching</strong>
+          <span>Get matched faster with verified and high-quality profiles.</span>
+        </div>
+      </div>
+      <div class="benefit-item" style="--delay: 3">
+        <span class="benefit-icon">🔒</span>
+        <div class="benefit-text">
+          <strong>Contact Filter Bypass</strong>
+          <span>Share phone numbers and socials directly in chats.</span>
+        </div>
+      </div>
+      <div class="benefit-item" style="--delay: 4">
+        <span class="benefit-icon">✅</span>
+        <div class="benefit-text">
+          <strong>Premium Verified Badge</strong>
+          <span>Stand out in the pool with a prestigious gold badge.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Flash Sale Banner (only shows if query param flash=1 and not expired) -->
+    <div class="flash-sale-banner" id="flashSaleBanner">
+      <div class="flash-sale-glow"></div>
+      <div class="flash-info">
+        <span class="flash-badge">⚡ FLASH SALE</span>
+        <span class="flash-desc">Premium Monthly: <span class="old-price">₹199</span> ➔ <strong class="new-price">₹59</strong></span>
+      </div>
+      <div class="flash-timer" id="flashCountdown">05:00</div>
+    </div>
+
+    <!-- Subscription Plans: 3D Flip Cards -->
+    <div class="plans-container">
+      <!-- Weekly Plan Card -->
+      <div class="plan-card-wrapper" id="planWeekly">
+        <div class="plan-card">
+          <div class="plan-card-face front-side">
+            <span class="plan-duration">WEEKLY</span>
+            <span class="plan-price">₹59</span>
+            <span class="plan-period">7 Days</span>
+            <span class="plan-action-hint">Tap for Details</span>
+          </div>
+          <div class="plan-card-face back-side">
+            <h4>Weekly Perks</h4>
+            <p>• ₹8.40 per day</p>
+            <p>• Full benefits access</p>
+            <p>• Cancel anytime</p>
+            <button class="select-plan-btn" data-plan="weekly">Select Week</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Monthly Plan Card (Default Popular) -->
+      <div class="plan-card-wrapper popular" id="planMonthly">
+        <div class="plan-card">
+          <div class="plan-card-face front-side">
+            <div class="popular-badge">POPULAR</div>
+            <span class="plan-duration">MONTHLY</span>
+            <span class="plan-price" id="monthlyPriceLabel">₹199</span>
+            <span class="plan-period">30 Days</span>
+            <span class="plan-action-hint">Tap for Details</span>
+          </div>
+          <div class="plan-card-face back-side">
+            <h4>Monthly Perks</h4>
+            <p id="monthlyPriceDetail">• ₹6.60 per day</p>
+            <p>• Most popular option</p>
+            <p>• Save over 40% vs weekly</p>
+            <button class="select-plan-btn" data-plan="monthly">Select Month</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Yearly Plan Card -->
+      <div class="plan-card-wrapper best-value" id="planYearly">
+        <div class="plan-card">
+          <div class="plan-card-face front-side">
+            <div class="best-badge">BEST VALUE</div>
+            <span class="plan-duration">YEARLY</span>
+            <span class="plan-price">₹999</span>
+            <span class="plan-period">365 Days</span>
+            <span class="plan-action-hint">Tap for Details</span>
+          </div>
+          <div class="plan-card-face back-side">
+            <h4>Yearly Perks</h4>
+            <p>• ₹2.70 per day</p>
+            <p>• Ultimate savings (80%)</p>
+            <p>• Year-round dating flow</p>
+            <button class="select-plan-btn" data-plan="yearly">Select Year</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom single-chat unlock / free mode option -->
+    <div class="single-unlock-container" id="singleUnlockSec">
+      <button class="glow-btn glow-btn-outline" id="singleUnlockBtn">
+        🔑 Unlock this chat only — ₹19
+      </button>
+    </div>
+
+    <div class="footer-note">
+      Payments are processed securely via Razorpay. Subscriptions do not auto-renew.
+    </div>
+  </div>
+
+  <script src="premium.js"></script>
+</body>
+</html>
