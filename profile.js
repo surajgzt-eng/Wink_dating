@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const isPremium = urlParams.get('premium') === '1' || urlParams.get('premium') === 'true';
   const referralLink = urlParams.get('ref_link') || '';
   const photoUrl = urlParams.get('photo_url') || '';
+  let currentUploadedPhotoUrl = photoUrl;
 
   // Setup elements
   const profilePhoto = document.getElementById('profilePhoto');
@@ -121,7 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const payload = { action: 'verify_request' };
     if (tg) {
       tg.sendData(JSON.stringify(payload));
-      tg.close();
     } else {
       console.log('Sending mock verify request payload:', payload);
       alert('Verification request sent. Open in Telegram to proceed.');
@@ -130,18 +130,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Change Photo Action
   const changePhotoBtn = document.getElementById('changePhotoBtn');
+  const photoInput = document.getElementById('photoInput');
+
   changePhotoBtn.addEventListener('click', () => {
-    if (tg && !tg.initDataUnsafe?.query_id) {
-      tg.showAlert("⚠️ To change your photo, you must open your profile from the bottom keyboard menu button (👤 My Profile 3D) in the bot chat.\n\nPlease close this window, ensure you see the chat menu keyboard, and tap '👤 My Profile 3D' to proceed!");
+    photoInput.click();
+  });
+
+  photoInput.addEventListener('change', async () => {
+    const file = photoInput.files[0];
+    if (!file) return;
+
+    // Validate size (5MB limit)
+    if (file.size > 5 * 1024 * 1024) {
+      if (tg) tg.showAlert('⚠️ Image file size must be less than 5MB!');
+      else alert('⚠️ Image file size must be less than 5MB!');
       return;
     }
-    const payload = { action: 'change_photo_request' };
-    if (tg) {
-      tg.sendData(JSON.stringify(payload));
-      tg.close();
-    } else {
-      console.log('Sending mock change photo request payload:', payload);
-      alert('Change photo request sent. Open inside Telegram to proceed.');
+
+    const originalText = changePhotoBtn.textContent;
+    changePhotoBtn.disabled = true;
+    changePhotoBtn.textContent = '⏳ Uploading...';
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('https://telegra.ph/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error(`Upload failed with status ${response.status}`);
+      }
+
+      const result = await response.json();
+      if (result && result[0] && result[0].src) {
+        const uploadedUrl = 'https://telegra.ph' + result[0].src;
+        currentUploadedPhotoUrl = uploadedUrl;
+        profilePhoto.src = uploadedUrl;
+        if (tg) tg.showAlert('✨ Photo uploaded successfully! Remember to tap "Save Changes" at the bottom of the page to save your updated profile.');
+        else alert('✨ Photo uploaded successfully!');
+      } else {
+        throw new Error('Invalid response structure from upload server');
+      }
+    } catch (err) {
+      console.error('Photo upload error:', err);
+      if (tg) {
+        tg.showAlert('⚠️ Failed to upload image. Please try another photo or try again later.');
+      } else {
+        alert('⚠️ Failed to upload image: ' + err.message);
+      }
+    } finally {
+      changePhotoBtn.disabled = false;
+      changePhotoBtn.textContent = originalText;
     }
   });
 
@@ -293,12 +335,12 @@ document.addEventListener('DOMContentLoaded', () => {
       age: age,
       city: city,
       interests: selectedInterests.join(','),
-      bio: bio
+      bio: bio,
+      photo_url: currentUploadedPhotoUrl
     };
 
     if (tg) {
       tg.sendData(JSON.stringify(payload));
-      tg.close();
     } else {
       console.log('Sending mock edit profile payload:', payload);
       alert('Profile updated. Open inside Telegram to save.');
