@@ -3,50 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>It's a Match! 🎉</title>
+  <title>It's a Match!</title>
   <link rel="stylesheet" href="shared.css">
-  <link rel="stylesheet" href="match.css">
-  <!-- Telegram WebApp SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    .page { max-width: 420px; margin: 0 auto; width: 100%; text-align: center; padding-top: 40px; }
+    .big-icon { font-size: 64px; margin-bottom: 8px; }
+    .title { font-size: 28px; font-weight: 800; color: var(--color-accent); margin-bottom: 4px; }
+    .subtitle { font-size: 15px; color: var(--color-text-muted); margin-bottom: 24px; }
+    .avatars { display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 28px; }
+    .avatars img {
+      width: 80px; height: 80px; border-radius: 50%; object-fit: cover;
+      border: 3px solid white; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .avatars .heart { font-size: 28px; }
+    .names { font-size: 18px; font-weight: 700; margin-bottom: 24px; }
+    .btn-group { display: flex; flex-direction: column; gap: 10px; align-items: center; }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+      color: white; border: none; padding: 14px 36px; border-radius: 14px;
+      font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer;
+      box-shadow: 0 4px 14px rgba(37,99,235,0.25);
+    }
+    .btn-primary:active { transform: scale(0.97); }
+    .btn-secondary {
+      background: transparent; color: var(--color-text-muted); border: none;
+      font-family: 'Outfit', sans-serif; font-size: 14px; cursor: pointer; padding: 8px;
+    }
+  </style>
 </head>
 <body>
-  <!-- Canvas for full-screen confetti particle animation -->
-  <canvas id="confettiCanvas"></canvas>
-
-  <div class="match-container animate-fadein">
-    <div class="sparkles-container"></div>
-    
-    <h1 class="match-title animate-bounce">It's a Match! 🎉</h1>
-    <p class="match-subtitle animate-fadein">You and your partner liked each other!</p>
-
-    <!-- Side-by-Side Avatar Cards with Center Heart -->
-    <div class="celebration-scene">
-      <div class="user-avatar-card u1-card animate-slideleft">
-        <div class="avatar-frame">
-          <img src="default_avatar.png" id="myAvatar" alt="My Photo">
-        </div>
-        <div class="user-name" id="myNameLabel">You</div>
-      </div>
-
-      <div class="match-symbol-container animate-pulse-scale">
-        <div class="pulse-glow"></div>
-        <div class="match-heart">❤️</div>
-      </div>
-
-      <div class="user-avatar-card u2-card animate-slideright">
-        <div class="avatar-frame">
-          <img src="default_avatar.png" id="partnerAvatar" alt="Partner Photo">
-        </div>
-        <div class="user-name" id="partnerNameLabel">Someone</div>
-      </div>
+  <div class="page">
+    <div class="big-icon">💘</div>
+    <h1 class="title">It's a Match!</h1>
+    <p class="subtitle">You and your partner liked each other</p>
+    <div class="avatars">
+      <img src="default_avatar.png" id="myAvatar" alt="You">
+      <span class="heart">❤️</span>
+      <img src="default_avatar.png" id="partnerAvatar" alt="Partner">
     </div>
-
-    <!-- Action Group -->
-    <div class="action-container animate-slideup">
-      <button class="glow-btn glow-btn-primary" id="chatNowBtn">Start Chatting 💬</button>
+    <div class="names" id="namesEl">You &amp; Someone</div>
+    <div class="btn-group">
+      <button class="btn-primary" id="viewMatchesBtn">View All Matches 💕</button>
     </div>
   </div>
-
   <script src="match.js"></script>
 </body>
 </html>

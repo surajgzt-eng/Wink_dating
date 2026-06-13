@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (tg) {
     tg.ready();
     tg.expand();
-    tg.setHeaderColor('#0f081d');
+    tg.setHeaderColor('#f8fafc');
   }
 
   // Parse query parameters
@@ -116,8 +116,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Verify Account Action
   verifyProfileBtn.addEventListener('click', () => {
-    if (tg && tg.initDataUnsafe?.query_id) {
-      tg.showAlert("⚠️ Verification can only be started when you open your profile from the bottom keyboard menu button (👤 My Profile 3D) in the bot chat.\n\nPlease close this window, ensure you see the chat menu keyboard, and tap '👤 My Profile 3D' to proceed!");
+    if (!tg || !tg.initDataUnsafe?.query_id) {
+      tg?.showAlert("⚠️ Verification requires opening your profile via the inline '👤 My Profile 3D' button in the bot chat.\n\nPlease close this window and reopen it by tapping that button.");
       return;
     }
     const payload = { action: 'verify_request' };
@@ -331,8 +331,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Save changes and submit via WebApp sendData
   const saveProfileBtn = document.getElementById('saveProfileBtn');
   saveProfileBtn.addEventListener('click', () => {
-    if (tg && tg.initDataUnsafe?.query_id) {
-      tg.showAlert("⚠️ Your profile changes cannot be saved because this window was opened from an inline button.\n\nTo save changes, you MUST open your profile by tapping the bottom keyboard menu button (👤 My Profile 3D) in the bot chat.\n\nPlease close this window and try again using the bottom menu!");
+    if (!tg || !tg.initDataUnsafe?.query_id) {
+      tg?.showAlert("⚠️ Profile changes can only be saved when opened via the inline '👤 My Profile 3D' button in the bot chat.\n\nPlease close this window and reopen it by tapping that button.");
       return;
     }
     const age = parseInt(editAge.value, 10);

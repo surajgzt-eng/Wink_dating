@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (tg) {
     tg.ready();
     tg.expand();
-    tg.setHeaderColor('#0f081d');
+    tg.setHeaderColor('#f8fafc');
   }
 
   // Parse query parameters

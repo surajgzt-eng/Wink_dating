@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>My Matches</title>
+  <link rel="stylesheet" href="shared.css">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    .page-container {
+      max-width: 420px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .page-title {
+      font-size: 22px;
+      font-weight: 800;
+      text-align: center;
+      padding: 20px 0 4px;
+    }
+    .page-subtitle {
+      text-align: center;
+      font-size: 14px;
+      color: var(--color-text-muted);
+      margin-bottom: 20px;
+    }
+    .back-row {
+      display: flex;
+      align-items: center;
+      padding: 12px 0;
+      gap: 8px;
+    }
+    .back-btn {
+      width: 32px;
+      height: 32px;
+      font-size: 18px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--color-text-muted);
+    }
+    .match-card {
+      display: flex;
+      align-items: center;
+      background: white;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      border: 1px solid rgba(0,0,0,0.06);
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .match-card:active { transform: scale(0.98); }
+    .match-photo {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 14px;
+      background: #e2e8f0;
+      border: 2px solid var(--panel-border);
+      flex-shrink: 0;
+    }
+    .match-info { flex: 1; }
+    .match-name {
+      font-weight: 700;
+      font-size: 16px;
+    }
+    .match-meta {
+      font-size: 13px;
+      color: var(--color-text-muted);
+      margin-top: 2px;
+    }
+    .match-arrow {
+      color: var(--color-text-muted);
+      font-size: 18px;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--color-text-muted);
+    }
+    .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--color-text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <div class="back-row">
+      <div class="back-btn" onclick="window.location.href='index.html'">←</div>
+      <span style="font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:1px;font-size:11px;">Matches</span>
+    </div>
+    <h1 class="page-title">Your Matches 💘</h1>
+    <p class="page-subtitle">People you've matched with</p>
+    <div id="matchesList">
+      <div class="loading">Loading matches...</div>
+    </div>
+  </div>
+  <script src="matches.js"></script>
+</body>
+</html>
