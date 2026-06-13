@@ -22,6 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   partnerNameEl.textContent = partnerName;
 
+  // Back button → matches list
+  backBtn.addEventListener('click', () => {
+    window.location.href = 'matches.html' + (apiURL ? `?api_url=${encodeURIComponent(apiURL)}` : '');
+  });
+
   // Load partner photo
   const initData = tg?.initData || '';
   fetch(`${apiBase}/api/matches`, { headers: { 'Authorization': `tma ${initData}` } })

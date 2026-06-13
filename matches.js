@@ -8,6 +8,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   await loadMatches();
 
+  // Back button → home
+  const backBtn = document.getElementById('backBtn');
+  if (backBtn) {
+    backBtn.addEventListener('click', () => {
+      window.location.href = 'index.html' + (apiURL ? `?api_url=${encodeURIComponent(apiURL)}` : '');
+    });
+  }
+
   async function loadMatches() {
     const listEl = document.getElementById('matchesList');
     try {

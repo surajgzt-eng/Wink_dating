@@ -95,7 +95,7 @@
 <body>
   <div class="page-container">
     <div class="back-row">
-      <div class="back-btn" onclick="window.location.href='index.html'">←</div>
+      <div class="back-btn" id="backBtn">←</div>
       <span style="font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:1px;font-size:11px;">Matches</span>
     </div>
     <h1 class="page-title">Your Matches 💘</h1>
@@ -104,6 +104,8 @@
       <div class="loading">Loading matches...</div>
     </div>
   </div>
+  <script src="nav.js"></script>
   <script src="matches.js"></script>
+  <script>injectBottomNav('matches');</script>
 </body>
 </html>

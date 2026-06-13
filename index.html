@@ -3,50 +3,85 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Wynk Speed Dating - Web App</title>
+  <title>Wynk Dating</title>
   <link rel="stylesheet" href="shared.css">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
-    .welcome-container {
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 80vh;
-      width: 100%;
-      max-width: 400px;
+    .page { max-width: 420px; margin: 0 auto; width: 100%; padding-top: 16px; }
+    .greeting { font-size: 13px; color: var(--color-text-muted); margin-bottom: 2px; }
+    .greeting-name { font-size: 24px; font-weight: 800; margin-bottom: 20px; }
+    .menu-card {
+      display: flex; align-items: center; gap: 16px;
+      background: white; border-radius: 16px; padding: 18px;
+      margin-bottom: 12px; cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.06);
+      transition: transform 0.15s;
     }
-    .logo-3d {
-      font-size: 80px;
-      margin-bottom: 24px;
-      filter: drop-shadow(0 0 20px rgba(236, 72, 153, 0.4));
-      animation: float 4s ease-in-out infinite;
+    .menu-card:active { transform: scale(0.97); }
+    .menu-icon {
+      width: 48px; height: 48px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
     }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
-    }
-    h1 {
-      font-size: 28px;
-      font-weight: 800;
-      background: linear-gradient(to right, #f3f4f6, #9333ea, #ec4899);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 12px;
-    }
-    p {
-      color: var(--color-text-muted);
-      margin-bottom: 30px;
-      font-size: 16px;
+    .menu-icon.purple { background: linear-gradient(135deg, #2563eb15, #7c3aed15); }
+    .menu-icon.pink { background: linear-gradient(135deg, #ec489915, #f43f5e15); }
+    .menu-icon.gold { background: linear-gradient(135deg, #d4af3715, #eab30815); }
+    .menu-icon.blue { background: linear-gradient(135deg, #2563eb15, #3b82f615); }
+    .menu-text { flex: 1; }
+    .menu-title { font-weight: 700; font-size: 16px; }
+    .menu-desc { font-size: 13px; color: var(--color-text-muted); margin-top: 2px; }
+    .menu-arrow { color: var(--color-text-muted); font-size: 20px; }
+    .badge {
+      background: #f43f5e; color: white; font-size: 11px; font-weight: 700;
+      padding: 2px 7px; border-radius: 10px; margin-left: 8px;
     }
   </style>
 </head>
 <body>
-  <div class="welcome-container animate-slideup">
-    <div class="logo-3d">✨</div>
-    <h1>WYNK SPEED DATING</h1>
-    <p>This is a Telegram Mini App companion. Please open the bot on Telegram to start matching and find your dates!</p>
-    <a href="https://t.me/wink_dating_bot" class="glow-btn glow-btn-primary">Open Wynk Dating Bot</a>
+  <div class="page">
+    <div class="greeting">Welcome to</div>
+    <div class="greeting-name">Wynk Dating 💘</div>
+
+    <div class="menu-card" onclick="navTo('profile.html')">
+      <div class="menu-icon purple">👤</div>
+      <div class="menu-text">
+        <div class="menu-title">My Profile</div>
+        <div class="menu-desc">Edit your photos, bio &amp; preferences</div>
+      </div>
+      <div class="menu-arrow">›</div>
+    </div>
+
+    <div class="menu-card" onclick="navTo('matches.html')">
+      <div class="menu-icon pink">💕</div>
+      <div class="menu-text">
+        <div class="menu-title">My Matches</div>
+        <div class="menu-desc">Chat with your matched partners</div>
+      </div>
+      <div class="menu-arrow">›</div>
+    </div>
+
+    <div class="menu-card" onclick="navTo('premium.html')">
+      <div class="menu-icon gold">⭐</div>
+      <div class="menu-text">
+        <div class="menu-title">Premium</div>
+        <div class="menu-desc">Unlock unlimited messages &amp; more</div>
+      </div>
+      <div class="menu-arrow">›</div>
+    </div>
   </div>
+
+  <script>
+    const tg = window.Telegram?.WebApp;
+    if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor('#f8fafc'); }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const apiURL = urlParams.get('api_url') || '';
+    const tgName = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.first_name) || '';
+    if (tgName) document.querySelector('.greeting-name').textContent = `Hey ${tgName} 💘`;
+
+    function navTo(page) {
+      window.location.href = page + (apiURL ? `?api_url=${encodeURIComponent(apiURL)}` : '');
+    }
+  </script>
 </body>
 </html>
