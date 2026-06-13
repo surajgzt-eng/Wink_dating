@@ -384,12 +384,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Close Button
+  // Close Button → main menu
   document.getElementById('closeBtn').addEventListener('click', () => {
-    if (tg) {
-      tg.close();
-    } else {
-      window.close();
-    }
+    const urlParams = new URLSearchParams(window.location.search);
+    const apiURL = urlParams.get('api_url') || '';
+    window.location.href = 'index.html' + (apiURL ? `?api_url=${encodeURIComponent(apiURL)}` : '');
   });
 });
