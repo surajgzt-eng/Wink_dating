@@ -79,6 +79,25 @@
     const tgName = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.first_name) || '';
     if (tgName) document.querySelector('.greeting-name').textContent = `Hey ${tgName} 💘`;
 
+    // Check if user already has premium — hide premium card
+    (async () => {
+      try {
+        const initData = tg?.initData || '';
+        if (initData) {
+          const res = await fetch((apiURL || '').replace(/\/+$/, '') + '/api/profile', {
+            headers: { 'Authorization': `tma ${initData}` }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.user?.isPremium) {
+              const premiumCard = document.querySelector('.menu-card[onclick*="premium"]');
+              if (premiumCard) premiumCard.style.display = 'none';
+            }
+          }
+        }
+      } catch (e) { /* silent */ }
+    })();
+
     function navTo(page) {
       window.location.href = page + (apiURL ? `?api_url=${encodeURIComponent(apiURL)}` : '');
     }

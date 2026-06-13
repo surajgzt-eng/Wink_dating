@@ -9,6 +9,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Parse query parameters
   const urlParams = new URLSearchParams(window.location.search);
+  const apiURL = urlParams.get('api_url') || '';
+  const apiBase = apiURL ? apiURL.replace(/\/+$/, '') : '';
+
+  // Redirect to menu if already premium
+  (async () => {
+    try {
+      const initData = tg?.initData || '';
+      if (initData) {
+        const res = await fetch(apiBase + '/api/profile', {
+          headers: { 'Authorization': `tma ${initData}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.user?.isPremium) {
+            window.location.href = 'index.html' + (apiURL ? `?api_url=${encodeURIComponent(apiURL)}` : '');
+            return;
+          }
+        }
+      }
+    } catch (e) { /* silent */ }
+  })();
+
   const partnerId = urlParams.get('partnerId') || '';
   const flash = urlParams.get('flash') === '1' || urlParams.get('flash') === 'true';
   const remainingMsgs = parseInt(urlParams.get('remaining') || '0', 10);
